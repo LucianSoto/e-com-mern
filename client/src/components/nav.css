@@ -7,6 +7,24 @@
 
 
 
+.promo-text {
+  color: rgb(170, 1, 1);
+  font-weight: bold;
+  text-align: center;
+}
+
+.mid-nav {
+  height: 58px;
+  background-color: white;
+}
+
+.logo {
+  background-color: ;
+}
+
 img {
-  height: 200px;
+  height: 58px;
+  max-height: 100%;
+  max-width: 100%;
+  /* background-color: #e7131a; */
 }
