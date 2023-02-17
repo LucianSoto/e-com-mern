@@ -1,3 +1,21 @@
+/*  set font for all app */
+
+
+/* #e7131a main-red */
+
+/* #f4f4f4 lighter bg */
+
+/* #ebeced darker bg */
+
+* {
+  box-sizing: border-box;
+  font-family: monserratregular, monserrat, Arial, Helvetica, sans-serif;
+}
+
+.App {
+  background: #ebeced;
+}
+
 /* .App {
   text-align: center;
 }
@@ -36,3 +54,4 @@
     transform: rotate(360deg);
   }
 } */
+
