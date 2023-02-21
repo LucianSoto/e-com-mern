@@ -1,13 +1,20 @@
 import './App.css';
 import Nav from './components/Nav'
+import Home from './pages/Home'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
-    <div className="App">
-      <Nav/>
-      {/* <video autoplay muted loop playsinline controls id="homepageHero_video" src="//media.guitarcenter.com/is/content/MMGS7/Videoheader%20Desktop%201540x660_GC_Pres_23%20[E001]%20CC02%20_%20Final"></video> */}
-      <br />
-    </div>
+    <Router >
+      <div className="App">
+        WELCOME TO MY STORE
+        <Nav/>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+          </Routes>
+      
+      </div>
+    </Router>
   );
 }
 
