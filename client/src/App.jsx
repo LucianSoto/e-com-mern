@@ -7,7 +7,6 @@ function App() {
   return (
     <Router >
       <div className="App">
-        WELCOME TO MY STORE
         <Nav/>
           <Routes>
             <Route exact path="/" element={<Home />} />
