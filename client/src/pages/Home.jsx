@@ -1,14 +1,11 @@
 import React from 'react'
+import Hero from '../components/Hero'
 
 const Home = () => {
   return (
-    <div>
-      <h1 className="text-3xl bolder" 
-      >Welcome to my store</h1>
-      <div className="hero">
-        HERO
-      </div>
-    </div>
+    <>
+      <Hero/>
+    </>
   )
 }
 

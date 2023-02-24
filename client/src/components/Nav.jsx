@@ -7,9 +7,17 @@ const Nav = () => {
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <nav className='flex'>
-      <div id="logo-burder-cont" className='flex'>
-        <div className="text-3xl">LOGO</div>
+    <nav className='flex-col w-full'>
+      <div id="logo-burder-cont" className='flex w-full justify-between'>
+        <div className="text-3xl ">L C</div>
+        <div id="search" className='flex'>
+          <input 
+            className='border-b pl-[10px] w-3/4'
+            type="text" 
+            placeholder='Search...'
+          />
+          <BiSearchAlt className='mt-1 -ml-7 text-3xl text-gray-500'/>
+        </div>
         <Hamburger 
           toggled={isOpen} 
           toggle={setOpen}
@@ -17,23 +25,17 @@ const Nav = () => {
           color="#000"
         />
       </div>
-      <div id="dropdown" className='flex-col'>
-        <div id="search" className='flex'>
-          <input 
-            className='border-b pl-[10px]'
-            type="text" 
-            placeholder='Search...'
-          />
-          <BiSearchAlt className='mt-1 -ml-7 text-3xl text-gray-500'/>
+      { isOpen &&
+        <div id="dropdown" className='flex-col hidden'>
+          <Link to="/log_in">Log In</Link>
+          <br />
+          <Link to="/register" >Sign Up</Link>
+            <div className="">Men</div>
+            <div className="">Women</div>
+            <div className="">Kids</div>
+            <div className="">Sale</div>
         </div>
-        <Link to="/log_in">Log In</Link>
-        <br />
-        <Link to="/register" >Sign Up</Link>
-          <div className="">Men</div>
-          <div className="">Women</div>
-          <div className="">Kids</div>
-          <div className="">Sale</div>
-      </div>
+      }
     </nav>
   )
 }
