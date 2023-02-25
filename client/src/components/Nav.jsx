@@ -6,27 +6,27 @@ import { BiSearchAlt } from 'react-icons/bi'
 const Nav = () => {
   const [isOpen, setOpen] = useState(false)
 
+  console.log(isOpen)
   return (
     <nav className='flex-col w-full'>
-      <div id="logo-burder-cont" className='flex w-full justify-between'>
-        <div className="text-3xl ">L C</div>
-        <div id="search" className='flex'>
+      <div id="logo-burder-cont" className='flex w-full justify-between px-1 justify-center items-center'>
+        <p className="text-3xl text-gray-100 bold flex ml-2 mt-1 items-center rounded-full p-2 ">LC</p>
+        <div id="search" className='flex justify-center items-center  ml-3'>
           <input 
-            className='border-b pl-[10px] w-3/4'
+            className='border-b-2 w-3/4 bg-transparent h-3/4 pb-2 mt-2 text-xl text-gray-100 font-bold'
             type="text" 
             placeholder='Search...'
           />
-          <BiSearchAlt className='mt-1 -ml-7 text-3xl text-gray-500'/>
+          <BiSearchAlt className='mt-1 -ml-2 text-3xl text-gray-100'/>
         </div>
         <Hamburger 
           toggled={isOpen} 
           toggle={setOpen}
-          className="text-black"
-          color="#000"
+          color="whitesmoke"
         />
       </div>
       { isOpen &&
-        <div id="dropdown" className='flex-col hidden'>
+        <div id="dropdown" className='relative mt-1 flex-col transition-all ease-out duration-300 h-3/4 bg-gray-100'>
           <Link to="/log_in">Log In</Link>
           <br />
           <Link to="/register" >Sign Up</Link>
