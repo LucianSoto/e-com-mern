@@ -25,15 +25,16 @@ const Nav = () => {
           color="whitesmoke"
         />
       </div>
-      { isOpen &&
+      {
+        isOpen &&
         <div id="dropdown" className='relative mt-1 flex-col transition-all ease-out duration-300 h-3/4 bg-gray-100'>
-          <Link to="/log_in">Log In</Link>
+          <Link onClick={()=> setOpen(!isOpen)} to="/log_in">Log In</Link>
           <br />
-          <Link to="/register" >Sign Up</Link>
-            <div className="">Men</div>
-            <div className="">Women</div>
-            <div className="">Kids</div>
-            <div className="">Sale</div>
+          <Link onClick={()=> setOpen(!isOpen)} to="/register" >Sign Up</Link>
+            <div onClick={()=> setOpen(!isOpen)} className="">Men</div>
+            <div onClick={()=> setOpen(!isOpen)} className="">Women</div>
+            <div onClick={()=> setOpen(!isOpen)} className="">Kids</div>
+            <div onClick={()=> setOpen(!isOpen)} className="">Sale</div>
         </div>
       }
     </nav>

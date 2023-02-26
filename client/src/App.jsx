@@ -1,6 +1,8 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav'
 import Home from './pages/Home'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import LogIn from './pages/LogIn'
+import Register from './pages/Register'
 
 function App() {
   return (
@@ -9,8 +11,9 @@ function App() {
         <Nav/>
           <Routes>
             <Route exact path="/" element={<Home />} />
-          </Routes>
-      
+            <Route path="/log_in" element={<LogIn />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>  
       </div>
     </Router>
   );
