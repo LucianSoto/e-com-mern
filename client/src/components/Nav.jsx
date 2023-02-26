@@ -1,27 +1,44 @@
-import React from 'react'
-import './nav.css'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Cross as Hamburger } from 'hamburger-react'
+import { BiSearchAlt } from 'react-icons/bi'
 
 const Nav = () => {
+  const [isOpen, setOpen] = useState(false)
+
   return (
-    <div>
-      <div className="promo-text">Get the presidentail treatment: Call 888-552-1105 for more details
-      </div>
-      <div className="mid-nav">
-        <div className="logo">
-          <img src="https://static.guitarcenter.com/img/brand/gc/cmn/svg-icon/gc-logo-white.svg?vId=7.2.49.1&cb=18" alt="" />
+    <nav className='flex-col w-full'>
+      <div id="logo-burder-cont" className='flex w-full justify-between px-1 justify-center items-center'>
+        <Link className='text-3xl text-gray-100 bold flex ml-2 mt-1 items-center rounded-full p-2'
+        to="/"
+        >LC</Link>
+        <div id="search" className='flex justify-center items-center  ml-3'>
+          <input 
+            className='border-b-2 w-3/4 bg-transparent h-3/4 pb-2 mt-2 text-xl text-gray-100 font-bold'
+            type="text" 
+            placeholder='Search...'
+          />
+          <BiSearchAlt className='mt-1 -ml-2 text-3xl text-gray-100'/>
         </div>
+        <Hamburger 
+          toggled={isOpen} 
+          toggle={setOpen}
+          color="whitesmoke"
+        />
       </div>
-      <div className="lower-nav">
-        <div className="low-nav-l">
-          <img src="https://static.guitarcenter.com/img/brand/gc/cmn/svg-icon/my-store-black.svg?vId=7.2.49.1&cb=18" alt="" className="second-logo" />
-          <div className="select-store">Select Store</div>
-        </div>  
-        <div className="low-nav-r">
-          98121
-          {/* get my location lol */}
+      {
+        isOpen &&
+        <div id="dropdown" className='relative mt-1 flex-col transition-all ease-out duration-300 h-3/4 bg-gray-100'>
+          <Link onClick={()=> setOpen(!isOpen)} to="/log_in">Log In</Link>
+          <br />
+          <Link onClick={()=> setOpen(!isOpen)} to="/register" >Sign Up</Link>
+            <div onClick={()=> setOpen(!isOpen)} className="">Men</div>
+            <div onClick={()=> setOpen(!isOpen)} className="">Women</div>
+            <div onClick={()=> setOpen(!isOpen)} className="">Kids</div>
+            <div onClick={()=> setOpen(!isOpen)} className="">Sale</div>
         </div>
-      </div>      
-    </div>
+      }
+    </nav>
   )
 }
 

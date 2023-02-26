@@ -1,3 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Arsenal&family=Fjalla+One&family=Fredoka+One&family=Fuzzy+Bubbles&family=Genos:wght@500&family=Koulen&family=Krona+One&family=Lexend+Deca:wght@200&family=M+PLUS+Rounded+1c:wght@300&family=Mako&family=Merriweather+Sans:wght@300&family=Montserrat:wght@100&family=Open+Sans&family=Poppins:wght@200&family=Press+Start+2P&family=Ramabhadra&family=Roboto:wght@100;300&family=Tajawal:wght@200&family=Titillium+Web:wght@300&family=Ubuntu:wght@300&display=swap');
+
 /* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,8 +18,20 @@ code {
     monospace;
 } */
 
-:root, html, body, #root {
+* {
+  box-sizing: border-box;
+  font-family: roboto, monserratregular, monserrat, Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  text-align: center;
+}
+html, body, #root {
   width: 100%;
   height: 100%;
+  margin: 0;
+  /* top: 0; */
 }
 
+
+.App {
+  /* background: #ebeced; */
+}
