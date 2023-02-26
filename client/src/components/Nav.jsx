@@ -6,11 +6,12 @@ import { BiSearchAlt } from 'react-icons/bi'
 const Nav = () => {
   const [isOpen, setOpen] = useState(false)
 
-  console.log(isOpen)
   return (
     <nav className='flex-col w-full'>
       <div id="logo-burder-cont" className='flex w-full justify-between px-1 justify-center items-center'>
-        <p className="text-3xl text-gray-100 bold flex ml-2 mt-1 items-center rounded-full p-2 ">LC</p>
+        <Link className='text-3xl text-gray-100 bold flex ml-2 mt-1 items-center rounded-full p-2'
+        to="/"
+        >LC</Link>
         <div id="search" className='flex justify-center items-center  ml-3'>
           <input 
             className='border-b-2 w-3/4 bg-transparent h-3/4 pb-2 mt-2 text-xl text-gray-100 font-bold'
