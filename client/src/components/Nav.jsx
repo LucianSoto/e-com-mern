@@ -14,7 +14,7 @@ const Nav = () => {
         >LC</Link>
         <div id="search" className='flex justify-center items-center  ml-3'>
           <input 
-            className='border-b-2 w-3/4 bg-transparent h-3/4 pb-2 mt-2 text-xl text-gray-100 font-bold'
+            className='border-b-2 w-3/4 bg-transparent h-3/4 pb-1 mt-2 text-xl text-gray-100 font-bold'
             type="text" 
             placeholder='Search...'
           />
@@ -29,13 +29,14 @@ const Nav = () => {
       {
         isOpen &&
         <div id="dropdown" className='relative mt-1 flex-col transition-all ease-out duration-300 h-3/4 bg-gray-100'>
-          <Link onClick={()=> setOpen(!isOpen)} to="/log_in">Log In</Link>
-          <br />
-          <Link onClick={()=> setOpen(!isOpen)} to="/register" >Sign Up</Link>
-            <div onClick={()=> setOpen(!isOpen)} className="">Men</div>
-            <div onClick={()=> setOpen(!isOpen)} className="">Women</div>
-            <div onClick={()=> setOpen(!isOpen)} className="">Kids</div>
-            <div onClick={()=> setOpen(!isOpen)} className="">Sale</div>
+          <Link onClick={()=> setOpen(!isOpen)} to="/log_in" className='flex h-16 justify-center items-center '
+          >Log In</Link>
+          <Link onClick={()=> setOpen(!isOpen)} to="/register" className='flex h-16 justify-center items-center'
+          >Sign Up</Link>
+            <div onClick={()=> setOpen(!isOpen)} className="h-16 flex items-center justify-center">Men</div>
+            <div onClick={()=> setOpen(!isOpen)} className="h-16 flex items-center justify-center">Women</div>
+            <div onClick={()=> setOpen(!isOpen)} className="h-16 flex items-center justify-center">Kids</div>
+            <div onClick={()=> setOpen(!isOpen)} className="h-16 flex items-center justify-center">Sale</div>
         </div>
       }
     </nav>

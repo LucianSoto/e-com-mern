@@ -9,8 +9,8 @@ const Register = () => {
     password2: '',
   })
 
-  const label = 'text-2xl'
-  const inputStyles = 'w-4/5 h-8 rounded-md text-2xl '
+  const label = 'text-xl text-black'
+  const inputStyles = 'w-4/5 h-8 rounded-md text-2xl mb-8'
 
   const updateForm = (e) => {
     console.log(e.name)
@@ -26,7 +26,7 @@ const Register = () => {
   }
 
   return (
-    <form className='flex flex-col items-center' onSubmit={(e)=> submitForm(e, formData)}>
+    <form className='flex flex-col items-center text-gray-100 h-screen' onSubmit={(e)=> submitForm(e, formData)}>
       <p className="text-4xl mt-12">Create an Accout</p>
       <p className="text-2xl my-6">Become A Member to Recieve Exclusive Offers</p>
       <label className={label}htmlFor="First Name">First Name</label>
