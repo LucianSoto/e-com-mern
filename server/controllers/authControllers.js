@@ -5,9 +5,10 @@ const User = require('../models/userModel')
 
 
 const registerUser = asyncHandler(async (req,res) => {
-  const { user_name, email, password } = req.body
+  const { first_name, last_name, email, password } = req.body
+  console.log(first_name)
 
-  if(!user_name, !email, !password){
+  if(!first_name, last_name, !email, !password){
     res.status(400)
     throw new Error('Field is empty')
   }
