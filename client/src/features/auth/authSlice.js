@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
 
-const user = JSON.parse(localStorage.getItem('user'))
+const user = JSON.parse(localStorage.getItem('LB-eComm-user'))
 
 //////// INITIAL STATE MUST BE DECLARED AS "initialState" OR APP WILL NOT LOAD /////////
 const initialState = {

@@ -5,15 +5,18 @@ const User = require('../models/userModel')
 
 
 const registerUser = asyncHandler(async (req,res) => {
-  const { first_name, last_name, email, password } = req.body
-  console.log(first_name)
+  const { firstName, lastName, email, password } = req.body
+  const first_name = firstName
+  const last_name = lastName 
 
-  if(!first_name, last_name, !email, !password){
+  if(!first_name, !last_name, !email, !password){
     res.status(400)
     throw new Error('Field is empty')
   }
   
-  return user_name
+  return res.status(200).json({
+    user_name: first_name + ' ' + last_name
+  })
 })
 
 module.exports = {
