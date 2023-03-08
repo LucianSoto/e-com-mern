@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Hero from '../components/Hero'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { reset } from '../features/auth/authSlice'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -11,7 +12,7 @@ const Home = () => {
     (state) => state.auth
   )
 
-  console.log(user)
+  console.log(user, isLoading, isError, isSuccess, message)
 
   useEffect(()=> {
     if(isError) {
@@ -19,16 +20,20 @@ const Home = () => {
     }
     if (!user) {
       navigate('/log_in')
-    } else {
-      // dispatch(reset())
+    } 
+    // else if (user === null) {
+    //   navigate('/log_in')
+    // } 
+    else {
+      dispatch(reset())
     }
-  },[user, isError, isSuccess, message])
+  },[user, isError, isSuccess, message, navigate, dispatch])
 
   return (
     <>
       <Hero/>
       <p className="">Welcome {user.first_name}</p>
-      
+
       {/* 
         <Sale />
         <Featured />

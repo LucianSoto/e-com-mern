@@ -34,6 +34,7 @@ const registerUser = asyncHandler(async (req,res) => {
     res.status(201).json({
       _id: user.id,
       first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
       token: generateToken(user._id)
     })
@@ -52,22 +53,21 @@ const loginUser = asyncHandler(async (req,res) => {
   // }
 
   const user = await User.findOne({ email })
-  if (user && (await bcrupt.compare(password, user.password))) {
+  if (user && (await bcrypt.compare(password, user.password))) {
+    console.log(user)
     res.status(201).json({
       _id: user.id,
-      username: {
-        first_name: first_name,
-        last_name: last_name,
-      },
+        first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
       token: generateToken(user._id)
     })
   }
 })
 
-const getUser = asyncHandler(async (req, res) => {
-  
-})
+// const getUser = asyncHandler(async (req, res) => {
+//   console.log('empty function')
+// })
 
 
 
@@ -80,5 +80,5 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
-  getUser,
+  // getUser,
 }

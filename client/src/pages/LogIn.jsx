@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, reset } from '../features/auth/authSlice'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 
@@ -33,36 +33,9 @@ const LogIn = () => {
     dispatch(reset())
   },[user, isError, isSuccess, message, navigate, dispatch])
   
-  const registerSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Min 2 characters')
-      .max(50, 'Max 50 characters.')
-      .required('Required'),
-    lastName: Yup.string()
-      .min(2, 'Min 2 characters')
-      .max(50, 'Max 50 characters.')
-      .required('Required'),
+  const loginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid Email').required('Required'),
-    password: Yup.string()
-      .min(8, '8 characters minimum')
-      .test("isValidPass", " is not valid", (value, context) => {
-        const hasUpperCase = /[A-Z]/.test(value);
-        const hasLowerCase = /[a-z]/.test(value);
-        const hasNumber = /[0-9]/.test(value);
-        const hasSymbole = /[!@#%&]/.test(value);
-        let validConditions = 0;
-        const numberOfMustBeValidConditions = 3;
-        const conditions = [hasLowerCase, hasUpperCase, hasNumber, hasSymbole];
-        conditions.forEach((condition) =>
-          condition ? validConditions++ : null
-        );
-        if (validConditions >= numberOfMustBeValidConditions) {
-          return true;
-        }
-        return false;
-      }),
-    password2: Yup.string()
-      .oneOf([Yup.ref('password'), null], "Passwords must match")
+    password: Yup.string().required('Required')
   })
 
   return (
@@ -70,8 +43,8 @@ const LogIn = () => {
       <p className="text-4xl mt-12">Create an Accout</p>
       <p className="text-2xl my-6">Become A Member to Recieve Exclusive Offers</p>
       <Formik
-        initialValues={{ firstName: '', lastName: '', email: '', password: '' }}
-        validationSchema={registerSchema}
+        initialValues={{ email: '', password: '' }}
+        validationSchema={loginSchema}
         onSubmit={(values, { setSubmitting }) => {
             dispatch(login(values))
             setSubmitting(false);
