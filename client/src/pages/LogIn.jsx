@@ -40,8 +40,7 @@ const LogIn = () => {
 
   return (
     <div className='flex flex-col items-center text-gray-100 h-screen'>
-      <p className="text-4xl mt-12">Create an Accout</p>
-      <p className="text-2xl my-6">Become A Member to Recieve Exclusive Offers</p>
+      <p className="text-4xl my-12">Log In</p>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}
