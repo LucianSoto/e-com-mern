@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { create } from '../../../../server/models/userModel'
+// import { create } from '../../../../server/models/userModel'
 import authService from './authService'
 
 const user = JSON.parse(localStorage.getItem('LB-eComm-user'))
