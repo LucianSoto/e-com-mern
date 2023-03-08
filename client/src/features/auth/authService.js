@@ -12,6 +12,16 @@ const register = async (userData) => {
   return res.data
 }
 
+const login = async (userData) => {
+  const res = await axios.post(API_URL, userData)
+
+  if(res.data) {
+    
+  }
+
+  return res.data
+}
+
 
 const authService = {
   register,
