@@ -41,11 +41,34 @@ const registerUser = asyncHandler(async (req,res) => {
     res.status(400)
     throw new Error('Invalid user data.')
   }
-  
-  return res.status(200).json({
-    user_name: first_name + ' ' + last_name
-  })
 })
+
+const loginUser = asyncHandler(async (req,res) => {
+  const { email, password } = req.body
+
+  // if(!email, !password) {
+  //   res.status(400)
+  //   throw new Error('Field is empty')
+  // }
+
+  const user = await User.findOne({ email })
+  if (user && (await bcrupt.compare(password, user.password))) {
+    res.status(201).json({
+      _id: user.id,
+      username: {
+        first_name: first_name,
+        last_name: last_name,
+      },
+      email: user.email,
+      token: generateToken(user._id)
+    })
+  }
+})
+
+const getUser = asyncHandler(async (req, res) => {
+  
+})
+
 
 
 const generateToken = (id) => {
@@ -56,4 +79,6 @@ const generateToken = (id) => {
 
 module.exports = {
   registerUser,
+  loginUser,
+  getUser,
 }

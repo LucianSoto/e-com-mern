@@ -28,7 +28,7 @@ const Home = () => {
     <>
       <Hero/>
       <p className="">Welcome {user.first_name}</p>
-
+      
       {/* 
         <Sale />
         <Featured />
