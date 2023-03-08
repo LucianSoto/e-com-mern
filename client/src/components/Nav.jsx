@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Cross as Hamburger } from 'hamburger-react'
 import { BiSearchAlt } from 'react-icons/bi'
 import { useSelector, useDispatch } from 'react-redux'
-import { logout } from '../features/auth/authSlice'
+import { logout, reset } from '../features/auth/authSlice'
 
 const Nav = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const navLinkStyles = 'h-16 flex items-center justify-center'
 
   const [isOpen, setOpen] = useState(false)
   const { user } = useSelector(state => state.auth)
+
+  const logoutUser = () => {
+    console.log('loging out in nav')
+    dispatch(logout())
+    dispatch(reset())
+    navigate('/log_in')
+  }
 
   return (
     <nav className='flex-col w-full'>
@@ -49,7 +57,7 @@ const Nav = () => {
           <div onClick={()=> setOpen(!isOpen)} className={navLinkStyles}>Sale</div>
           { user &&
             <>
-              <p onClick={()=> dispatch(logout)} className={navLinkStyles}>Log Out</p>
+              <p onClick={()=> logoutUser()} className={navLinkStyles}>Log Out</p>
             </>            
           }
         </div>

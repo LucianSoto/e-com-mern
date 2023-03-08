@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <>
       <Hero/>
-      <p className="">Welcome {user.first_name}</p>
+      <p className="">Welcome { user? user.first_name : null}</p>
 
       {/* 
         <Sale />

@@ -47,14 +47,8 @@ const registerUser = asyncHandler(async (req,res) => {
 const loginUser = asyncHandler(async (req,res) => {
   const { email, password } = req.body
 
-  // if(!email, !password) {
-  //   res.status(400)
-  //   throw new Error('Field is empty')
-  // }
-
   const user = await User.findOne({ email })
   if (user && (await bcrypt.compare(password, user.password))) {
-    console.log(user)
     res.status(201).json({
       _id: user.id,
         first_name: user.first_name,
@@ -68,8 +62,6 @@ const loginUser = asyncHandler(async (req,res) => {
 // const getUser = asyncHandler(async (req, res) => {
 //   console.log('empty function')
 // })
-
-
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
