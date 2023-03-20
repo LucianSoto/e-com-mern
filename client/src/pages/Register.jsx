@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { register, reset } from '../features/auth/authSlice'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import Oauth from '../components/Oauth'
 
 
 const Register = () => {
@@ -89,7 +90,7 @@ const Register = () => {
        }) => (
         // onSubmit={(e)=> submitForm(e, values)} 
         /////// Must be formik <Form> element not regular <form> element
-          <Form className='flex flex-col items-center w-full'>
+          <Form className='flex flex-col items-center w-full mb-16'>
             <label htmlFor="first_name" className="">First Name</label>
             <input
               className={errors.firstName ? inputErrorStyles : inputStyles}              type="text"
@@ -137,6 +138,9 @@ const Register = () => {
           </Form>
        )}
      </Formik>
+     <Oauth register={true}/>
+     <p className="">or</p>
+     <Link to='/register'>Login</Link>
     </div>
   )
 }
