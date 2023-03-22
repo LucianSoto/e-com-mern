@@ -24,9 +24,28 @@ export const register = createAsyncThunk(
       ( error.response &&
         error.response.data &&
         error.response.data.message) ||
-      error.message || 
-      error.toString()
-      return thunkAPI.rejectWithValue(message) 
+        error.message || 
+        error.toString()
+        return thunkAPI.rejectWithValue(message) 
+    }
+  }
+)
+    
+//Register with Google
+export const registerGoogle = createAsyncThunk(
+  'register_google',
+  async(token, thunkAPI)=> {
+    try{
+      return await authService.googleRegister(token)
+    } catch (error) {
+    const message = (
+      error.response && 
+      error.response.data &&
+      error.response.data.message
+    ) ||
+    error.message ||
+    error.toString()
+    return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -54,6 +73,7 @@ export const logout = createAsyncThunk(
     console.log('loging out')
   await authService.logout()
 })
+
 
 export const authSlice = createSlice({
   name: "auth",
@@ -99,6 +119,8 @@ export const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null
       })
+
+      //ADD REDUCERS FOR GOOGLE
   },
 })
 

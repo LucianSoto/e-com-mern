@@ -5,6 +5,7 @@ const User = require('../models/userModel')
 
 
 const registerUser = asyncHandler(async (req,res) => {
+  console.log('google auth working!')
   const { firstName, lastName, email, password } = req.body
   const first_name = firstName
   const last_name = lastName 
