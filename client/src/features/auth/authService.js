@@ -16,6 +16,12 @@ const register = async (userData) => {
 const googleRegister = async (accessToken)  => {
   console.log('in service')
   const res = await axios.post(API_URL + 'register', {googleAccessToken: accessToken})
+
+  if(res.data) {
+    localStorageUser.setItem(localStorageUser, JSON.stringify(res.data))
+  }
+
+  return res.data
 }
 
 const login = async (userData) => {

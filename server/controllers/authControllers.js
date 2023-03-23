@@ -5,43 +5,83 @@ const User = require('../models/userModel')
 
 
 const registerUser = asyncHandler(async (req,res) => {
-  console.log('google auth working!')
-  const { firstName, lastName, email, password } = req.body
-  const first_name = firstName
-  const last_name = lastName 
+  if(req.body.googleAccessToken){
+    const { googleAccessToken } = req.body
 
-  if(!first_name, !last_name, !email, !password){
-    res.status(400)
-    throw new Error('Field is empty')
-  }
-
-  const userExists = await User.findOne({email})
-  if(userExists){
-    res.status(400)
-    throw new Error('User already exists!')
-  }
-
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
-
-  const user = await User.create({
-    first_name,
-    last_name,
-    email,
-    password: hashedPassword,
-  })
-
-  if(user) {
-    res.status(201).json({
-      _id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      token: generateToken(user._id)
+    console.log('google auth working!')
+    axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        "Authorization": `Bearer ${googleAccessToken}`
+      }
     })
+      .then(async res => {
+        const firstname = res.data.given_name
+        const lastName = res.data.family_name
+        const email = res.data.email
+        // const picture = res.data.picture
+
+        const userExists = await User.findOne({email})
+
+        if(userExists)
+          return res.status(400).json({message: "user already exists!"})
+
+        const user = await User.create({
+          verified: "true", // for auth instead of pw
+          email, 
+          first_name, 
+          last_name
+        })
+
+        if(user) {
+          res.status(201).json({
+            _id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            token: generateToken(user._id)
+          })
+        } else {
+          res.status(400)
+          throw new Error("Invalid user data.")
+        }
+      })
   } else {
-    res.status(400)
-    throw new Error('Invalid user data.')
+    const { firstName, lastName, email, password } = req.body
+    const first_name = firstName
+    const last_name = lastName 
+
+    if(!first_name, !last_name, !email, !password){
+      res.status(400)
+      throw new Error('Field is empty')
+    }
+
+    const userExists = await User.findOne({email})
+    if(userExists){
+      res.status(400)
+      throw new Error('User already exists!')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    const user = await User.create({
+      first_name,
+      last_name,
+      email,
+      password: hashedPassword,
+    })
+
+    if(user) {
+      res.status(201).json({
+        _id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        token: generateToken(user._id)
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user data.')
+    }
   }
 })
 
