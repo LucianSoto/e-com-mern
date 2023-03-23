@@ -4,7 +4,8 @@ import { login, reset } from '../features/auth/authSlice'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate, Link } from 'react-router-dom'
-import Oauth from '../components/Oauth'
+import GoogleIcon from '../assets/images/google-icon.png'
+
 
 const LogIn = () => {
   const navigate = useNavigate()
@@ -91,7 +92,15 @@ const LogIn = () => {
           </Form>
        )}
      </Formik>
-    <Oauth register={false} />
+     <div 
+      className="flex flex-col h-1/5 w-full items-center mb-0"
+      onClick={()=> login()}
+      >
+      <img src={GoogleIcon} alt="" 
+        className='h-2/5  mb-6'
+      />
+      <p className='text-xl'>Register with Google</p>
+     </div>
     <p className="">or</p>
      <Link to='/register'>Register</Link>
     </div>

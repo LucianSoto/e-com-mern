@@ -4,8 +4,8 @@ import { register, reset, registerGoogle } from '../features/auth/authSlice'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate, Link } from 'react-router-dom'
-import Oauth from '../components/Oauth'
 import { useGoogleLogin } from '@react-oauth/google'
+import GoogleIcon from '../assets/images/google-icon.png'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -38,7 +38,7 @@ const Register = () => {
     dispatch(registerGoogle(accessToken))
   }
 
-  const googleRegister = useGoogleLogin({onSuccess: handleGoogleSignupSuccess})
+  const login = useGoogleLogin({onSuccess: handleGoogleSignupSuccess})
 
   const registerSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -144,10 +144,15 @@ const Register = () => {
           </Form>
        )}
      </Formik>
-      <Oauth 
-        register={true}
-        googleRegister={googleRegister}
+     <div 
+      className="flex flex-col h-1/5 w-full items-center mb-0"
+      onClick={()=> login()}
+      >
+      <img src={GoogleIcon} alt="" 
+        className='h-2/5  mb-6'
       />
+      <p className='text-xl'>Register with Google</p>
+     </div>
      <p className="">or</p>
      <Link to='/register'>Login</Link>
     </div>
