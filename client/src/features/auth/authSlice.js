@@ -51,6 +51,24 @@ export const registerGoogle = createAsyncThunk(
   }
 )
 
+export const logingoogle = createAsyncThunk(
+  'login google',
+  async(token, thunkAPI) => {
+    try {
+      return await authService.googleLogin(token)
+    } catch (error) {
+      const message = (
+      error.response && 
+      error.response.data &&
+      error.response.data.message
+    ) ||
+    error.message ||
+    error.toString()
+    return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const login = createAsyncThunk(
   'log_in/',
   async(user, thunkAPI) => {

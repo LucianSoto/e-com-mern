@@ -24,6 +24,15 @@ const googleRegister = async (accessToken)  => {
   return res.data
 }
 
+const googleLogin = async (accessToken) => {
+  const res = await axios.post(API_URL + "log_in", {googleAccessToken: accessToken})
+
+  if(res.data) {
+    localStorage.setItem(localStorageUser, JSON.stringify(res.data))
+  }
+  return res.data
+}
+
 const login = async (userData) => {
   const res = await axios.post(API_URL + "log_in", userData)
   if(res.data) {
@@ -39,6 +48,7 @@ const logout = async () => {
 const authService = {
   register,
   googleRegister,
+  googleLogin,
   login,
   logout,
 }
