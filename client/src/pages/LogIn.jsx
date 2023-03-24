@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { login, reset } from '../features/auth/authSlice'
+import { login, reset, loginGoogle } from '../features/auth/authSlice'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate, Link } from 'react-router-dom'
 import GoogleIcon from '../assets/images/google-icon.png'
+import { useGoogleLogin } from '@react-oauth/google'
 
 
 const LogIn = () => {
@@ -19,8 +20,6 @@ const LogIn = () => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
-
-  // console.log(user, isSuccess)
 
   useEffect(()=> {
     if(isError) {
@@ -38,6 +37,14 @@ const LogIn = () => {
     email: Yup.string().email('Invalid Email').required('Required'),
     password: Yup.string().required('Required')
   })
+
+  const handleGoogleSignupSuccess = (tokenResponse) =>{
+    console.log('handleing google success')
+    const accessToken = tokenResponse.access_token
+    dispatch(loginGoogle(accessToken))
+  }
+
+  const login = useGoogleLogin({onSuccess: handleGoogleSignupSuccess})
 
   return (
     <div className='flex flex-col items-center text-gray-100 h-screen'>

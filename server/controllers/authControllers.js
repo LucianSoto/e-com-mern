@@ -84,7 +84,33 @@ const registerUser = asyncHandler(async (req,res) => {
 
 const loginUser = asyncHandler(async (req,res) => {
   if(req.body.googleAccessToken) {
+    const { googleAccessToken } = req.body
 
+    const getGoogleAccount = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        "Authorization": `Bearer ${googleAccessToken}`
+      }
+    })    
+
+    if(!getGoogleAccount) {
+      res.status(404).json({message: "Google user does not exist."})
+    } 
+    const email = getGoogleAccount.data.email
+    console.log(getGoogleAccount.data.email)
+
+    const user = await User.findOne({ email })
+
+    if( !user ) {
+      res.status(404).json({message: "User does not exist in Data base"})
+    } else {
+      res.status(200).json({
+        _id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        token: generateToken(user._id)
+      })
+    }
   } else {
     const { email, password } = req.body
   
@@ -92,7 +118,7 @@ const loginUser = asyncHandler(async (req,res) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       res.status(201).json({
         _id: user.id,
-          first_name: user.first_name,
+        first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
         token: generateToken(user._id)

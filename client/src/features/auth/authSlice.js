@@ -13,7 +13,6 @@ const initialState = {
   message: "",
 }
 
-//Register User
 export const register = createAsyncThunk(
   'auth/',
   async (user, thunkAPI) => {
@@ -31,9 +30,7 @@ export const register = createAsyncThunk(
   }
 )
     
-//Register with Google
 export const registerGoogle = createAsyncThunk(
-  // console.log('in slice google'),
   'register_google',
   async(token, thunkAPI)=> {
     try{
@@ -51,7 +48,7 @@ export const registerGoogle = createAsyncThunk(
   }
 )
 
-export const logingoogle = createAsyncThunk(
+export const loginGoogle = createAsyncThunk(
   'login google',
   async(token, thunkAPI) => {
     try {
