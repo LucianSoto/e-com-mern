@@ -2,23 +2,33 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
-
+const axios = require('axios')
 
 const registerUser = asyncHandler(async (req,res) => {
   if(req.body.googleAccessToken){
+    // console.log(req.body.googleAccessToken, 'token')
     const { googleAccessToken } = req.body
 
-    console.log('google auth working!')
-    axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: {
-        "Authorization": `Bearer ${googleAccessToken}`
-      }
-    })
-      .then(async res => {
-        const firstname = res.data.given_name
-        const lastName = res.data.family_name
-        const email = res.data.email
+    // axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+    //   headers: {
+    //     "Authorization": `Bearer ${googleAccessToken}`
+    //   }
+    // })
+      // .then(async res => {
+      //   const first_name = res.data.given_name
+      //   const last_name = res.data.family_name
+      //   const email = res.data.email
         // const picture = res.data.picture
+
+        const getGoogleAccount = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: {
+            "Authorization": `Bearer ${googleAccessToken}`
+          }
+        })
+
+        const first_name = getGoogleAccount.data.given_name
+        const last_name = getGoogleAccount.data.family_name
+        const email = getGoogleAccount.data.email
 
         const userExists = await User.findOne({email})
 
@@ -43,7 +53,7 @@ const registerUser = asyncHandler(async (req,res) => {
           res.status(400)
           throw new Error("Invalid user data.")
         }
-      })
+      // })
   } else {
     const { firstName, lastName, email, password } = req.body
     const first_name = firstName

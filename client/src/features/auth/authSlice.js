@@ -33,8 +33,8 @@ export const register = createAsyncThunk(
     
 //Register with Google
 export const registerGoogle = createAsyncThunk(
+  // console.log('in slice google'),
   'register_google',
-  console.log('in slice google'),
   async(token, thunkAPI)=> {
     try{
       return await authService.googleRegister(token)
