@@ -118,6 +118,20 @@ export const authSlice = createSlice({
         state.message = action.payload
         state.user = null
       })
+      .addCase(registerGoogle.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(registerGoogle.fulfilled, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = true
+        state.user = action.payload
+      })
+      .addCase(registerGoogle.rejected, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = false
+        state.message = action.payload
+        state.user = null
+      })
       .addCase(login.pending, (state) => {
         state.isLoading = true
       })
@@ -135,7 +149,21 @@ export const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null
       })
-
+      .addCase(loginGoogle.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(loginGoogle.fulfilled, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = false
+        state.message = action.payload
+        state.user = null
+      })
+      .addCase(loginGoogle.rejected, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = false
+        state.message = action.payload
+        state.user = null
+      })
       //ADD REDUCERS FOR GOOGLE
   },
 })
