@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { login, reset } from '../features/auth/authSlice'
+import { login, reset, loginGoogle } from '../features/auth/authSlice'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate, Link } from 'react-router-dom'
-import Oauth from '../components/Oauth'
+import GoogleIcon from '../assets/images/google-icon.png'
+import { useGoogleLogin } from '@react-oauth/google'
+
 
 const LogIn = () => {
   const navigate = useNavigate()
@@ -18,8 +20,6 @@ const LogIn = () => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
-
-  // console.log(user, isSuccess)
 
   useEffect(()=> {
     if(isError) {
@@ -37,6 +37,14 @@ const LogIn = () => {
     email: Yup.string().email('Invalid Email').required('Required'),
     password: Yup.string().required('Required')
   })
+
+  const handleGoogleSignupSuccess = (tokenResponse) =>{
+    console.log('handleing google success')
+    const accessToken = tokenResponse.access_token
+    dispatch(loginGoogle(accessToken))
+  }
+
+  const login = useGoogleLogin({onSuccess: handleGoogleSignupSuccess})
 
   return (
     <div className='flex flex-col items-center text-gray-100 h-screen'>
@@ -91,7 +99,15 @@ const LogIn = () => {
           </Form>
        )}
      </Formik>
-    <Oauth register={false} />
+     <div 
+      className="flex flex-col h-1/5 w-full items-center mb-0"
+      onClick={()=> login()}
+      >
+      <img src={GoogleIcon} alt="" 
+        className='h-2/5  mb-6'
+      />
+      <p className='text-xl'>Register with Google</p>
+     </div>
     <p className="">or</p>
      <Link to='/register'>Register</Link>
     </div>

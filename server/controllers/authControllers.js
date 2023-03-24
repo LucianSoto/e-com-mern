@@ -2,60 +2,128 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
-
+const axios = require('axios')
 
 const registerUser = asyncHandler(async (req,res) => {
-  const { firstName, lastName, email, password } = req.body
-  const first_name = firstName
-  const last_name = lastName 
+  if(req.body.googleAccessToken){
+    const { googleAccessToken } = req.body
 
-  if(!first_name, !last_name, !email, !password){
-    res.status(400)
-    throw new Error('Field is empty')
-  }
-
-  const userExists = await User.findOne({email})
-  if(userExists){
-    res.status(400)
-    throw new Error('User already exists!')
-  }
-
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
-
-  const user = await User.create({
-    first_name,
-    last_name,
-    email,
-    password: hashedPassword,
-  })
-
-  if(user) {
-    res.status(201).json({
-      _id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      token: generateToken(user._id)
+    const getGoogleAccount = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        "Authorization": `Bearer ${googleAccessToken}`
+      }
     })
+
+    const first_name = getGoogleAccount.data.given_name
+    const last_name = getGoogleAccount.data.family_name
+    const email = getGoogleAccount.data.email
+
+    const userExists = await User.findOne({email})
+
+    if(userExists)
+      return res.status(400).json({message: "user already exists!"})
+
+    const user = await User.create({
+      verified: "true", // for auth instead of pw
+      email, 
+      first_name, 
+      last_name
+    })
+
+    if(user) {
+      res.status(201).json({
+        _id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        token: generateToken(user._id)
+      })
+    } else {
+      res.status(400)
+      throw new Error("Invalid user data.")
+    }
   } else {
-    res.status(400)
-    throw new Error('Invalid user data.')
+    const { firstName, lastName, email, password } = req.body
+    const first_name = firstName
+    const last_name = lastName 
+
+    if(!first_name, !last_name, !email, !password){
+      res.status(400)
+      throw new Error('Field is empty')
+    }
+
+    const userExists = await User.findOne({email})
+    if(userExists){
+      res.status(400)
+      throw new Error('User already exists!')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    const user = await User.create({
+      first_name,
+      last_name,
+      email,
+      password: hashedPassword,
+    })
+
+    if(user) {
+      res.status(201).json({
+        _id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        token: generateToken(user._id)
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user data.')
+    }
   }
 })
 
 const loginUser = asyncHandler(async (req,res) => {
-  const { email, password } = req.body
+  if(req.body.googleAccessToken) {
+    const { googleAccessToken } = req.body
 
-  const user = await User.findOne({ email })
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(201).json({
-      _id: user.id,
+    const getGoogleAccount = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        "Authorization": `Bearer ${googleAccessToken}`
+      }
+    })    
+
+    if(!getGoogleAccount) {
+      res.status(404).json({message: "Google user does not exist."})
+    } 
+    const email = getGoogleAccount.data.email
+    console.log(getGoogleAccount.data.email)
+
+    const user = await User.findOne({ email })
+
+    if( !user ) {
+      res.status(404).json({message: "User does not exist in Data base"})
+    } else {
+      res.status(200).json({
+        _id: user.id,
         first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      token: generateToken(user._id)
-    })
+        last_name: user.last_name,
+        email: user.email,
+        token: generateToken(user._id)
+      })
+    }
+  } else {
+    const { email, password } = req.body
+  
+    const user = await User.findOne({ email })
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.status(201).json({
+        _id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        token: generateToken(user._id)
+      })
+    }
   }
 })
 

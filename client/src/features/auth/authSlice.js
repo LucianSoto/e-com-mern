@@ -13,7 +13,6 @@ const initialState = {
   message: "",
 }
 
-//Register User
 export const register = createAsyncThunk(
   'auth/',
   async (user, thunkAPI) => {
@@ -24,9 +23,45 @@ export const register = createAsyncThunk(
       ( error.response &&
         error.response.data &&
         error.response.data.message) ||
-      error.message || 
-      error.toString()
-      return thunkAPI.rejectWithValue(message) 
+        error.message || 
+        error.toString()
+        return thunkAPI.rejectWithValue(message) 
+    }
+  }
+)
+    
+export const registerGoogle = createAsyncThunk(
+  'register_google',
+  async(token, thunkAPI)=> {
+    try{
+      return await authService.googleRegister(token)
+    } catch (error) {
+    const message = (
+      error.response && 
+      error.response.data &&
+      error.response.data.message
+    ) ||
+    error.message ||
+    error.toString()
+    return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const loginGoogle = createAsyncThunk(
+  'login google',
+  async(token, thunkAPI) => {
+    try {
+      return await authService.googleLogin(token)
+    } catch (error) {
+      const message = (
+      error.response && 
+      error.response.data &&
+      error.response.data.message
+    ) ||
+    error.message ||
+    error.toString()
+    return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -55,6 +90,7 @@ export const logout = createAsyncThunk(
   await authService.logout()
 })
 
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -82,6 +118,20 @@ export const authSlice = createSlice({
         state.message = action.payload
         state.user = null
       })
+      .addCase(registerGoogle.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(registerGoogle.fulfilled, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = true
+        state.user = action.payload
+      })
+      .addCase(registerGoogle.rejected, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = false
+        state.message = action.payload
+        state.user = null
+      })
       .addCase(login.pending, (state) => {
         state.isLoading = true
       })
@@ -99,6 +149,22 @@ export const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null
       })
+      .addCase(loginGoogle.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(loginGoogle.fulfilled, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = false
+        state.message = action.payload
+        state.user = null
+      })
+      .addCase(loginGoogle.rejected, (state, action) => {
+        state.isLoading = true
+        state.isSuccess = false
+        state.message = action.payload
+        state.user = null
+      })
+      //ADD REDUCERS FOR GOOGLE
   },
 })
 
