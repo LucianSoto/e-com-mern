@@ -21,6 +21,8 @@ const LogIn = () => {
     (state) => state.auth
   )
 
+  console.log(user, isSuccess)
+
   useEffect(()=> {
     if(isError) {
       console.log(message)
@@ -44,7 +46,7 @@ const LogIn = () => {
     dispatch(loginGoogle(accessToken))
   }
 
-  const login = useGoogleLogin({onSuccess: handleGoogleSignupSuccess})
+  const login = useGoogleLogin({ onSuccess: handleGoogleSignupSuccess })
 
   return (
     <div className='flex flex-col items-center text-gray-100 h-screen'>

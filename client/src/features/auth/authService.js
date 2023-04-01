@@ -20,7 +20,6 @@ const googleRegister = async (accessToken)  => {
   if(res.data) {
     localStorageUser.setItem(localStorageUser, JSON.stringify(res.data))
   }
-
   return res.data
 }
 
@@ -38,6 +37,7 @@ const login = async (userData) => {
   if(res.data) {
     localStorage.setItem(localStorageUser, JSON.stringify(res.data))
   }
+  console.log('loged in service')
   return res.data
 }
 
