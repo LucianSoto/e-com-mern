@@ -154,9 +154,9 @@ export const authSlice = createSlice({
       })
       .addCase(loginGoogle.fulfilled, (state, action) => {
         state.isLoading = true
-        state.isSuccess = false
-        state.message = action.payload
-        state.user = null
+        state.isSuccess = true
+        // state.message = action.payload
+        state.user = action.payload
       })
       .addCase(loginGoogle.rejected, (state, action) => {
         state.isLoading = true
