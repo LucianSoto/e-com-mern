@@ -45,12 +45,18 @@ const logout = async () => {
   localStorage.removeItem(localStorageUser)
 }
 
+const forgotPW = async (email) => {
+  console.log(email, 'at service')
+  const res = await axios
+}
+
 const authService = {
   register,
   googleRegister,
   googleLogin,
   login,
   logout,
+  forgotPW,
 }
 
 export default authService

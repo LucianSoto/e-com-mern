@@ -1,14 +1,29 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { forgotPW } from '../features/auth/authSlice'
 
 function ForgotPw() {
+  const [email, setEmail] = useState('') 
+  const dispatch = useDispatch()
+  const { isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  )
 
-  const submitForgotPW = () => {
-    
+  useEffect(() => {
+    console.log(isSuccess, isError, message)
+  },[isSuccess, isError, message])
+
+  const submitForgotPW = (e, email) => {
+    e.preventDefault()
+    console.log(email)
+    dispatch(forgotPW(email))
   }
+
+
 
   return (
     <div className='h-screen w-full flex items-center justify-center'>
-      <form action="submit" onSubmit={submitForgotPW} 
+      <form action="submit" onSubmit={(e)=> submitForgotPW(e, email)} 
         className="w-full"
       >
         <p 
@@ -18,18 +33,21 @@ function ForgotPw() {
           className="text-2xl mb-4"
         >Email</p>
         <input type="email" 
-          className='mb-12 rounded text-2xl w-3/4'
+          className='mb-12 rounded text-2xl w-3/5 py-1'
+          onChange={(e)=> setEmail(e.target.value)}
         />
         <br />
         <button
           className='text-2xl rounded text-gray-100 uppercase 
-          bg-gradient-to-b from-emerald-600 to-green-500
           px-8 py-2 w-1/2 tracking-widest font-bold
+          bg-green-500
           '
-        >Reset</button>
+          >Reset</button>
       </form>
     </div>
   )
 }
 
 export default ForgotPw
+
+// bg-gradient-to-b from-emerald-600 to-green-500

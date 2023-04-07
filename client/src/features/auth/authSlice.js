@@ -87,7 +87,13 @@ export const logout = createAsyncThunk(
   'log_out',
   async() => {
     console.log('loging out')
-  await authService.logout()
+    await authService.logout()
+})
+
+export const forgotPW = createAsyncThunk(
+  'forgot_pw',
+  async(email) => {
+    await authService.forgotPW(email)
 })
 
 
