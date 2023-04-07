@@ -170,8 +170,10 @@ export const authSlice = createSlice({
         state.message = action.payload
         state.user = null
       })
-      //ADD REDUCERS FOR GOOGLE
-  },
+      .addCase(forgotPW.fulfilled, (state) => {
+        
+      })
+    },
 })
 
 export const { reset } = authSlice.actions

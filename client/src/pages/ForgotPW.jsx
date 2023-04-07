@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { forgotPW } from '../features/auth/authSlice'
+import axios from 'axios'
 
 function ForgotPw() {
   const [email, setEmail] = useState('') 
@@ -13,13 +14,20 @@ function ForgotPw() {
     console.log(isSuccess, isError, message)
   },[isSuccess, isError, message])
 
-  const submitForgotPW = (e, email) => {
+  const submitForgotPW = async (e, email) => {
     e.preventDefault()
     console.log(email)
-    dispatch(forgotPW(email))
+    // dispatch(forgotPW(email))
+    axios.post(`http://localhost:9000/userAuth/forgot_password`, {
+      body: email
+    })
+      .then(res => {
+        console.log(res)
+        
+      })
   }
 
-
+// MAKE POPUP "check email   / user does not exist"
 
   return (
     <div className='h-screen w-full flex items-center justify-center'>

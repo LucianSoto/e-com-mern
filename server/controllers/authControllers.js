@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const axios = require('axios')
+const crypto = require('crypto')
 
 const registerUser = asyncHandler(async (req,res) => {
   if(req.body.googleAccessToken){
@@ -131,6 +132,46 @@ const loginUser = asyncHandler(async (req,res) => {
 //   console.log('empty function')
 // })
 
+const forgotPW = asyncHandler(async (req, res) => {
+  console.log(req.body)
+  const { email } = req.body
+  const user = await User.findOne({ email }) 
+
+  if(!user) return res
+    .status(404)
+    .json({ message: "No user with this email exists.", status: "error"})
+
+  const token =  await crypto.randomBytes(32)
+
+  if(!token) return res
+    .status(500).json({
+      message: "An error occured with randombypes, please try again later.",
+      status: "error",
+    })
+
+  const convertTokenToHex = token.toString("hex")
+
+  user.resetToken = convertTokenToHex
+  user.expireToken = Date.now() + 18000000
+
+  try {
+    const saveToken = await user.save()
+    return res.status(200).json({
+      message: "Add your client url that handles reset password.",
+      data: {
+        resetToken: saveToken.resetToken,
+        expireToken: saveToken.expireToken,
+      },
+      status: "success",
+    })
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: `An error occured while saving token -> ${err}`
+    })
+  }
+})
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '10d'
@@ -140,5 +181,6 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
+  forgotPW,
   // getUser,
 }
