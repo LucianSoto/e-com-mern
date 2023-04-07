@@ -21,8 +21,6 @@ const LogIn = () => {
     (state) => state.auth
   )
 
-  console.log(user, isSuccess)
-
   useEffect(()=> {
     if(isError) {
       console.log(message)
@@ -46,7 +44,7 @@ const LogIn = () => {
     dispatch(loginGoogle(accessToken))
   }
 
-  const login = useGoogleLogin({ onSuccess: handleGoogleSignupSuccess })
+  const googleLogin = useGoogleLogin({ onSuccess: handleGoogleSignupSuccess })
 
   return (
     <div className='flex flex-col items-center text-gray-100 h-screen'>
@@ -55,6 +53,7 @@ const LogIn = () => {
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}
         onSubmit={(values, { setSubmitting }) => {
+          console.log('login in')
             dispatch(login(values))
             setSubmitting(false);
         }}
@@ -94,16 +93,22 @@ const LogIn = () => {
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className={!Formik.isValid ? "mt-8 bg-yellow-400 w-4/5 py-1 rounded-md text-2xl" : 'bg-yellow-200' }
+              className={!Formik.isValid ? "mt-8 mb-2 bg-yellow-400 w-4/5 py-1 rounded-md text-2xl" : 'bg-yellow-200' }
             >
               Submit
             </button>
+            <Link
+              to='/forgot_password'
+              className='text-green-800 underline'
+            >
+              Forgot Password?
+            </Link>
           </Form>
        )}
      </Formik>
      <div 
       className="flex flex-col h-1/5 w-full items-center mb-0"
-      onClick={()=> login()}
+      onClick={()=> googleLogin()}
       >
       <img src={GoogleIcon} alt="" 
         className='h-2/5  mb-6'

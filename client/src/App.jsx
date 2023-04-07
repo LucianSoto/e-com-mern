@@ -3,6 +3,7 @@ import Nav from './components/Nav'
 import Home from './pages/Home'
 import LogIn from './pages/LogIn'
 import Register from './pages/Register'
+import ForgotPW from './pages/ForgotPW'
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/log_in" element={<LogIn />} />
             <Route path="/register" element={<Register />} />
+
+            <Route path="forgot_password" element={<ForgotPW />} />
           </Routes>  
       </div>
     </Router>
