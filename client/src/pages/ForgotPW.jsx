@@ -18,13 +18,12 @@ function ForgotPw() {
     e.preventDefault()
     console.log(email)
     // dispatch(forgotPW(email))
-    axios.post(`http://localhost:9000/userAuth/forgot_password`, {
-      body: email
-    })
-      .then(res => {
-        console.log(res)
-
-      })
+    const res = await axios.post(
+      `http://localhost:9000/userAuth/forgot_password`, 
+      {email: email}
+      )
+    
+      console.log(res)
   }
 
 // MAKE POPUP "check email   / user does not exist"

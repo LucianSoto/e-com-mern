@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import LogIn from './pages/LogIn'
 import Register from './pages/Register'
 import ForgotPW from './pages/ForgotPW'
+import PasswordReset from './pages/PasswordReset'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/register" element={<Register />} />
 
             <Route path="forgot_password" element={<ForgotPW />} />
+            <Route path="update_password" element={<PasswordReset />} />
           </Routes>  
       </div>
     </Router>

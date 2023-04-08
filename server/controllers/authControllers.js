@@ -138,7 +138,6 @@ const loginUser = asyncHandler(async (req,res) => {
 // })
 
 const forgotPW = asyncHandler(async (req, res) => {
-  console.log(req.body)
   const { email } = req.body
   const user = await User.findOne({ email }) 
 
@@ -157,32 +156,26 @@ const forgotPW = asyncHandler(async (req, res) => {
   user.resetToken = tokenToHex
   user.tokenExpiration = Date.now() + 18000000
 
-  try {
-    const saveToken = await user.save() 
-    const link = `${process.env.BASE_URL}/password-reset/${user._id}/${tokenToHex}`
-    await passwordReset(user.email, "Password reset", link)
-    
-    return res.status(200).json({
-      message: "Add your client url that handles reset password.",
-      data: {
-        resetToken: saveToken.resetToken,
-        tokenExpiration: saveToken.tokenExpiration,
-      },
-      status: "success",
-    })
-  } catch (err) {
-    return res.status(500).json({
-      status: false,
-      message: `An error occured while saving token -> ${err}`
-    })
-  }
+  const saveToken = await user.save() 
+  const link = `${process.env.BASE_URL}/password-reset/${user._id}/${tokenToHex}`
+  await passwordReset(user.email, "Password Reset", link)
+  
+  return res.status(200).json({
+    message: "Add your client url that handles reset password.",
+    data: {
+      resetToken: saveToken.resetToken,
+      tokenExpiration: saveToken.tokenExpiration,
+    },
+    status: "success",
+  })
 })
 
 const pwReset = asyncHandler(async (req, res) => {
-  console.log(req.body)
   const id = req.params.userId
   const tokenReq = req.params.token
   const newPW = req.body.password
+  
+  console.log(req.body, 'in pwreset')
 
   const user = await User.findById(id)
   if(!user) return res.status(400).json({
