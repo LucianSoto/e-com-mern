@@ -4,6 +4,8 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const axios = require('axios')
 const crypto = require('crypto')
+const passwordReset = require('../utils/passwordReset')
+
 
 const registerUser = asyncHandler(async (req,res) => {
   if(req.body.googleAccessToken){
@@ -135,7 +137,7 @@ const loginUser = asyncHandler(async (req,res) => {
 //   console.log('empty function')
 // })
 
-const forgotPW = asyncHandler(async (req, res) => {
+const pwReset = asyncHandler(async (req, res) => {
   console.log(req.body)
   const { email } = req.body
   const user = await User.findOne({ email }) 
@@ -152,18 +154,21 @@ const forgotPW = asyncHandler(async (req, res) => {
       status: "error",
     })
 
-  const convertTokenToHex = token.toString("hex")
+  const tokenToHex = token.toString("hex")
 
-  user.resetToken = convertTokenToHex
-  user.expireToken = Date.now() + 18000000
+  user.resetToken = tokenToHex
+  user.tokenExpiration = Date.now() + 18000000
 
   try {
-    const saveToken = await user.save()
+    const saveToken = await user.save() 
+    const link = `${process.env.BASE_URL}/password-reset/${user._id}/${tokenToHex}`
+    await passwordReset(user.email, "Password reset", link)
+    
     return res.status(200).json({
       message: "Add your client url that handles reset password.",
       data: {
         resetToken: saveToken.resetToken,
-        expireToken: saveToken.expireToken,
+        tokenExpiration: saveToken.tokenExpiration,
       },
       status: "success",
     })
@@ -184,6 +189,6 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
-  forgotPW,
+  pwReset,
   // getUser,
 }

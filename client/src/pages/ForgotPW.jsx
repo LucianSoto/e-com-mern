@@ -18,12 +18,12 @@ function ForgotPw() {
     e.preventDefault()
     console.log(email)
     // dispatch(forgotPW(email))
-    axios.post(`http://localhost:9000/userAuth/forgot_password`, {
+    axios.post(`http://localhost:9000/userAuth/password_reset`, {
       body: email
     })
       .then(res => {
         console.log(res)
-        
+
       })
   }
 
