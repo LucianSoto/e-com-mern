@@ -18,7 +18,7 @@ function ForgotPw() {
     e.preventDefault()
     console.log(email)
     // dispatch(forgotPW(email))
-    axios.post(`http://localhost:9000/userAuth/password_reset`, {
+    axios.post(`http://localhost:9000/userAuth/forgot_password`, {
       body: email
     })
       .then(res => {

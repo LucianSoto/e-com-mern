@@ -4,6 +4,7 @@ const router = express.Router()
 const {
   registerUser,
   loginUser,
+  forgotPW,
   pwReset,
   // getUser,
 } = require('../controllers/authControllers')
@@ -12,7 +13,8 @@ const {
 
 router.post('/register', registerUser)
 router.post('/log_in', loginUser)
-router.post('/password_reset', pwReset)
+router.post('/forgot_password', forgotPW)
+router.post('/password_reset/:userId/:token', pwReset)
 // router.get('/get_user', protect getUser)  
 
 module.exports = router

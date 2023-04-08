@@ -137,19 +137,17 @@ const loginUser = asyncHandler(async (req,res) => {
 //   console.log('empty function')
 // })
 
-const pwReset = asyncHandler(async (req, res) => {
+const forgotPW = asyncHandler(async (req, res) => {
   console.log(req.body)
   const { email } = req.body
   const user = await User.findOne({ email }) 
 
-  if(!user) return res
-    .status(404)
+  if(!user) return res.status(404)
     .json({ message: "No user with this email exists.", status: "error"})
 
   const token =  await crypto.randomBytes(32)
 
-  if(!token) return res
-    .status(500).json({
+  if(!token) return res.status(500).json({
       message: "An error occured with randombypes, please try again later.",
       status: "error",
     })
@@ -180,6 +178,38 @@ const pwReset = asyncHandler(async (req, res) => {
   }
 })
 
+const pwReset = asyncHandler(async (req, res) => {
+  console.log(req.body)
+  const id = req.params.userId
+  const tokenReq = req.params.token
+  const newPW = req.body.password
+
+  const user = await User.findById(id)
+  if(!user) return res.status(400).json({
+    message: "Invalid link",
+    status: 'error'
+  })
+
+  if(user.resetToken !== tokenReq) 
+  return res.status(400).json({
+    message: "Expired token",
+    status: "error"
+  })
+  
+  const salt = await bcrypt.getSalt(10)
+  const hashedPassword = await bcrypt.hash(password, salt)
+
+  user.password = hashedPassword
+  user.resetToken = ''
+  user.tokenExpiration = ''
+  // implement toke expiration
+  await user.save()
+
+  res.status(200).json({
+    message: "password reset successfully",
+  })
+})
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '10d'
@@ -189,6 +219,7 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
+  forgotPW,
   pwReset,
   // getUser,
 }
