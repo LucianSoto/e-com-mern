@@ -32,6 +32,9 @@ const registerUser = asyncHandler(async (req,res) => {
     })
 
     if(user) {
+      const validationCode =  await crypto.randomBytes(32)
+      const  emailValidationCode = validationCode.toString('hex')
+
       res.status(201).json({
         _id: user.id,
         first_name: user.first_name,

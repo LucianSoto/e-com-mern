@@ -21,11 +21,15 @@ const userSchema = mongoose.Schema(
     // avatar: {
     //   type:
     // }
-    resetToken: {
-      type: String,
-    },
-    expireToken: {
-      type: String,
+    // resetToken: {
+    //   type: String,
+    // },
+    // expireToken: {
+    //   type: String,
+    // },
+    emailValidated: {
+      type: Boolean,
+      default: false,
     }
   },
   {
