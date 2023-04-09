@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { forgotPW } from '../features/auth/authSlice'
 import axios from 'axios'
 
 function ForgotPw() {
@@ -17,7 +16,6 @@ function ForgotPw() {
   const submitForgotPW = async (e, email) => {
     e.preventDefault()
     console.log(email)
-    // dispatch(forgotPW(email))
     const res = await axios.post(
       `http://localhost:9000/userAuth/forgot_password`, 
       {email: email}

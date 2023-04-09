@@ -14,7 +14,7 @@ const {
 router.post('/register', registerUser)
 router.post('/log_in', loginUser)
 router.post('/forgot_password', forgotPW)
-router.post('/password_reset/:userId/:token', pwReset)
+router.post('/password_reset', pwReset)
 // router.get('/get_user', protect getUser)  
 
 module.exports = router

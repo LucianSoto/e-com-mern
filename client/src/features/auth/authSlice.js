@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-// import { create } from '../../../../server/models/userModel'
 import authService from './authService'
 
 const user = JSON.parse(localStorage.getItem('LB-eComm-user'))
@@ -67,7 +66,7 @@ export const loginGoogle = createAsyncThunk(
 )
 
 export const login = createAsyncThunk(
-  'log_in/',
+  'log_in',
   async(user, thunkAPI) => {
     try {
       return await authService.login(user)
@@ -86,16 +85,25 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk(
   'log_out',
   async() => {
-    console.log('loging out')
     await authService.logout()
 })
 
-export const forgotPW = createAsyncThunk(
-  'forgot_pw',
-  async(email) => {
-    await authService.forgotPW(email)
-})
-
+export const passwordReset = createAsyncThunk(
+  'password_reset',
+  async(data, thunkAPI)=> {
+    try{
+      return await authService.resetPassword(data)
+    } catch (error) {
+      const message =
+      ( error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
 
 export const authSlice = createSlice({
   name: "auth",
@@ -161,7 +169,6 @@ export const authSlice = createSlice({
       .addCase(loginGoogle.fulfilled, (state, action) => {
         state.isLoading = true
         state.isSuccess = true
-        // state.message = action.payload
         state.user = action.payload
       })
       .addCase(loginGoogle.rejected, (state, action) => {
@@ -169,9 +176,6 @@ export const authSlice = createSlice({
         state.isSuccess = false
         state.message = action.payload
         state.user = null
-      })
-      .addCase(forgotPW.fulfilled, (state) => {
-        
       })
     },
 })

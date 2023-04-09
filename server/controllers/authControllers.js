@@ -171,17 +171,17 @@ const forgotPW = asyncHandler(async (req, res) => {
 })
 
 const pwReset = asyncHandler(async (req, res) => {
-  const id = req.params.userId
-  const tokenReq = req.params.token
+  const id = req.body.id
+  const tokenReq = req.body.token
   const newPW = req.body.password
   
-  console.log(req.body, 'in pwreset')
-
   const user = await User.findById(id)
   if(!user) return res.status(400).json({
     message: "Invalid link",
     status: 'error'
   })
+
+  console.log(user)
 
   if(user.resetToken !== tokenReq) 
   return res.status(400).json({
@@ -189,8 +189,10 @@ const pwReset = asyncHandler(async (req, res) => {
     status: "error"
   })
   
-  const salt = await bcrypt.getSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(newPW, salt)
+
+  console.log(user)
 
   user.password = hashedPassword
   user.resetToken = ''
