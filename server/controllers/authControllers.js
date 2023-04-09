@@ -157,7 +157,7 @@ const forgotPW = asyncHandler(async (req, res) => {
   user.tokenExpiration = Date.now() + 18000000
 
   const saveToken = await user.save() 
-  const link = `${process.env.BASE_URL}/password-reset/${user._id}/${tokenToHex}`
+  const link = `${process.env.BASE_URL}/update_password/${user._id}/${tokenToHex}`
   await passwordReset(user.email, "Password Reset", link)
   
   return res.status(200).json({
