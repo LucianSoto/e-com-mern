@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik , Form } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { passwordReset } from '../features/auth/authSlice'
+import { passwordReset,  } from '../features/auth/authSlice'
+import axios from 'axios'
 // import  and create dispatch
 
 function PasswordReset() {
@@ -12,8 +13,31 @@ function PasswordReset() {
   const { id, token } = useParams()
   const [pw1, setPw1] = useState('')
   const [pw2, setPw2] = useState('')
+  
   // check if token is expired
+  const checkLinkValid = async (id, token) => {
+    const data = {
+      id: id,
+      token: token,
+    }
+    
+    const res = await axios.post('http://localhost:9000/userAuth/check_link_valid', data)
+    console.log(res)
+    if(res) {
+      return true
+    } else {
+      return false
+    }
+    //return true
+  }
+  
+  useEffect(()=> {
+    // if token
 
+
+    checkLinkValid(id, token)
+
+  }, [checkLinkValid,])
   
 
   const updatePassword = (e, pw1, pw2) => {

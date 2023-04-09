@@ -6,6 +6,7 @@ const {
   loginUser,
   forgotPW,
   pwReset,
+  checkLinkValid,
   // getUser,
 } = require('../controllers/authControllers')
 
@@ -15,6 +16,7 @@ router.post('/register', registerUser)
 router.post('/log_in', loginUser)
 router.post('/forgot_password', forgotPW)
 router.post('/password_reset', pwReset)
+router.post('/check_link_valid', checkLinkValid)
 // router.get('/get_user', protect getUser)  
 
 module.exports = router

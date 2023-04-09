@@ -171,9 +171,7 @@ const forgotPW = asyncHandler(async (req, res) => {
 })
 
 const pwReset = asyncHandler(async (req, res) => {
-  const id = req.body.id
-  const tokenReq = req.body.token
-  const newPW = req.body.password
+  const {id, tokenReq, newPW} = req.body
   
   const user = await User.findById(id)
   if(!user) return res.status(400).json({
@@ -205,6 +203,12 @@ const pwReset = asyncHandler(async (req, res) => {
   })
 })
 
+const checkLinkValid = asyncHandler(async (req, res) => {
+  const {id, token} = req.body
+
+  
+})
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '10d'
@@ -216,5 +220,6 @@ module.exports = {
   loginUser,
   forgotPW,
   pwReset,
+  checkLinkValid,
   // getUser,
 }

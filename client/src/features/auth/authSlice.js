@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+// import { create } from '../../../../server/models/userModel'
 import authService from './authService'
 
 const user = JSON.parse(localStorage.getItem('LB-eComm-user'))
@@ -88,9 +89,11 @@ export const logout = createAsyncThunk(
     await authService.logout()
 })
 
+
+
 export const passwordReset = createAsyncThunk(
   'password_reset',
-  async(data, thunkAPI)=> {
+  async(data, thunkAPI) => {
     try{
       return await authService.resetPassword(data)
     } catch (error) {
@@ -104,6 +107,15 @@ export const passwordReset = createAsyncThunk(
     }
   }
 )
+
+// export const validateResettoken = createAsyncThunk(
+//   'password_reset',
+//   async(data, thunkAPI) => {
+//     try {
+//       return await authService.validateResetToken
+//     }
+//   }
+// )
 
 export const authSlice = createSlice({
   name: "auth",
