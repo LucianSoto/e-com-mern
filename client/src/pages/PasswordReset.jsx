@@ -13,31 +13,28 @@ function PasswordReset() {
   const { id, token } = useParams()
   const [pw1, setPw1] = useState('')
   const [pw2, setPw2] = useState('')
+  const [modal, setModal] = useState(false)
   
-  // check if token is expired
   const checkLinkValid = async (id, token) => {
     const data = {
       id: id,
       token: token,
     }
     
-    const res = await axios.post('http://localhost:9000/userAuth/check_link_valid', data)
-    console.log(res)
-    if(res) {
+    try {
+      const res = await axios.post('http://localhost:9000/userAuth/check_link_valid', data)
+      console.log(res)
       return true
-    } else {
-      return false
+    } catch (error) {
+      setTimeout(()=> {
+        navigate('/page_not_found')
+      },250)
     }
-    //return true
   }
   
   useEffect(()=> {
-    // if token
-
-
     checkLinkValid(id, token)
-
-  }, [checkLinkValid,])
+  }, )
   
 
   const updatePassword = (e, pw1, pw2) => {

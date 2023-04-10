@@ -141,14 +141,14 @@ const forgotPW = asyncHandler(async (req, res) => {
   const { email } = req.body
   const user = await User.findOne({ email }) 
 
-  if(!user) return res.status(404)
-    .json({ message: "No user with this email exists.", status: "error"})
+  if(!user) return res.status(404).json({ 
+    message: "No user with this email exists.", status: "error"
+  })
 
   const token =  await crypto.randomBytes(32)
 
   if(!token) return res.status(500).json({
       message: "An error occured with randombypes, please try again later.",
-      status: "error",
     })
 
   const tokenToHex = token.toString("hex")
@@ -200,13 +200,21 @@ const pwReset = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     message: "password reset successfully",
+    status: "success"
   })
 })
 
 const checkLinkValid = asyncHandler(async (req, res) => {
   const {id, token} = req.body
+  const user = User.findOne({ id })
 
-  
+   if (user.resetToken === token) {
+    res.status(200).json({
+      message: "Reset Token Success"
+    })
+  } else {
+    res.status(404).json({message: 'token expired or invalid', status: 'fail'})
+  }
 })
 
 const generateToken = (id) => {

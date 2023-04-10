@@ -5,6 +5,7 @@ import LogIn from './pages/LogIn'
 import Register from './pages/Register'
 import ForgotPW from './pages/ForgotPW'
 import PasswordReset from './pages/PasswordReset'
+import PageNotFound from './pages/PageNotFound'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
             <Route path="forgot_password" element={<ForgotPW />} />
             <Route path="update_password/:id/:token" element={<PasswordReset />} />
+            <Route path="page_not_found" element={<PageNotFound />} />
           </Routes>  
       </div>
     </Router>
