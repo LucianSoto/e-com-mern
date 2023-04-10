@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 function ForgotPw() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('') 
   const dispatch = useDispatch()
   const { isSuccess, isError, message } = useSelector(
@@ -15,13 +17,19 @@ function ForgotPw() {
 
   const submitForgotPW = async (e, email) => {
     e.preventDefault()
-    console.log(email)
-    const res = await axios.post(
-      `http://localhost:9000/userAuth/forgot_password`, 
-      {email: email}
-      )
-    
-      console.log(res)
+
+    try {
+      const res = await axios.post(
+        `http://localhost:9000/userAuth/forgot_password`, 
+        {email: email}
+        )
+
+        if(res) {
+          navigate('/')
+        }
+    } catch (error) {
+      alert('Invalid email address.')
+    }
   }
 
 // MAKE POPUP "check email   / user does not exist"
