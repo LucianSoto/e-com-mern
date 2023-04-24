@@ -13,7 +13,7 @@ const LogIn = () => {
   const dispatch = useDispatch()
 
   const label = 'text-xl text-black'
-  const inputStyles = 'w-4/5 h-8 rounded-md text-2xl mb-1 text-black'
+  const inputStyles = 'w-4/5 h-8 rounded-md text-2xl mb-5 text-black'
   const inputErrorStyles = 'w-4/5 h-8 rounded-md text-2xl mb-8 text-black border-2 border-red-400'
   const errorStyles = 'text-red-500 bolder-2 mb-2'
   
@@ -47,7 +47,7 @@ const LogIn = () => {
   const googleLogin = useGoogleLogin({ onSuccess: handleGoogleSignupSuccess })
 
   return (
-    <div className='flex flex-col items-center text-gray-100 h-screen'>
+    <div className='flex flex-col items-center text-gray-100 h-screen w-full md:w-2/5'>
       <p className="text-4xl my-12">Log In</p>
       <Formik
         initialValues={{ email: '', password: '' }}

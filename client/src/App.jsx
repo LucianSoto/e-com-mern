@@ -10,7 +10,7 @@ import PageNotFound from './pages/PageNotFound'
 function App() {
   return (
     <Router >
-      <div className="h-full w-full bg-gradient-to-r from-cyan-500 to-blue-500">
+      <div className="h-full w-full flex flex-col justify-center items-center bg-gradient-to-r from-cyan-500 to-blue-500">
         <Nav/>
           <Routes>
             <Route exact path="/" element={<Home />} />
