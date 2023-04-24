@@ -67,7 +67,7 @@ export const loginGoogle = createAsyncThunk(
 )
 
 export const login = createAsyncThunk(
-  'log_in/',
+  'log_in',
   async(user, thunkAPI) => {
     try {
       return await authService.login(user)
@@ -86,10 +86,36 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk(
   'log_out',
   async() => {
-    console.log('loging out')
-  await authService.logout()
+    await authService.logout()
 })
 
+
+
+export const passwordReset = createAsyncThunk(
+  'password_reset',
+  async(data, thunkAPI) => {
+    try{
+      return await authService.resetPassword(data)
+    } catch (error) {
+      const message =
+      ( error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+// export const validateResettoken = createAsyncThunk(
+//   'password_reset',
+//   async(data, thunkAPI) => {
+//     try {
+//       return await authService.validateResetToken
+//     }
+//   }
+// )
 
 export const authSlice = createSlice({
   name: "auth",
@@ -155,7 +181,6 @@ export const authSlice = createSlice({
       .addCase(loginGoogle.fulfilled, (state, action) => {
         state.isLoading = true
         state.isSuccess = true
-        // state.message = action.payload
         state.user = action.payload
       })
       .addCase(loginGoogle.rejected, (state, action) => {
@@ -164,8 +189,7 @@ export const authSlice = createSlice({
         state.message = action.payload
         state.user = null
       })
-      //ADD REDUCERS FOR GOOGLE
-  },
+    },
 })
 
 export const { reset } = authSlice.actions

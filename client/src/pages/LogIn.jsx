@@ -13,15 +13,13 @@ const LogIn = () => {
   const dispatch = useDispatch()
 
   const label = 'text-xl text-black'
-  const inputStyles = 'w-4/5 h-8 rounded-md text-2xl mb-1 text-black'
+  const inputStyles = 'w-4/5 h-8 rounded-md text-2xl mb-5 text-black'
   const inputErrorStyles = 'w-4/5 h-8 rounded-md text-2xl mb-8 text-black border-2 border-red-400'
   const errorStyles = 'text-red-500 bolder-2 mb-2'
   
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
-
-  console.log(user, isSuccess)
 
   useEffect(()=> {
     if(isError) {
@@ -46,15 +44,16 @@ const LogIn = () => {
     dispatch(loginGoogle(accessToken))
   }
 
-  const login = useGoogleLogin({ onSuccess: handleGoogleSignupSuccess })
+  const googleLogin = useGoogleLogin({ onSuccess: handleGoogleSignupSuccess })
 
   return (
-    <div className='flex flex-col items-center text-gray-100 h-screen'>
+    <div className='flex flex-col items-center text-gray-100 h-screen w-full md:w-2/5'>
       <p className="text-4xl my-12">Log In</p>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}
         onSubmit={(values, { setSubmitting }) => {
+          console.log('login in')
             dispatch(login(values))
             setSubmitting(false);
         }}
@@ -94,16 +93,22 @@ const LogIn = () => {
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className={!Formik.isValid ? "mt-8 bg-yellow-400 w-4/5 py-1 rounded-md text-2xl" : 'bg-yellow-200' }
+              className={!Formik.isValid ? "mt-8 mb-2 bg-yellow-400 w-4/5 py-1 rounded-md text-2xl" : 'bg-yellow-200' }
             >
               Submit
             </button>
+            <Link
+              to='/forgot_password'
+              className='text-green-800 underline'
+            >
+              Forgot Password?
+            </Link>
           </Form>
        )}
      </Formik>
      <div 
       className="flex flex-col h-1/5 w-full items-center mb-0"
-      onClick={()=> login()}
+      onClick={()=> googleLogin()}
       >
       <img src={GoogleIcon} alt="" 
         className='h-2/5  mb-6'

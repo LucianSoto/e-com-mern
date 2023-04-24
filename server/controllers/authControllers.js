@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const axios = require('axios')
+const crypto = require('crypto')
+const passwordReset = require('../utils/passwordReset')
+
 
 const registerUser = asyncHandler(async (req,res) => {
   if(req.body.googleAccessToken){
@@ -31,6 +34,9 @@ const registerUser = asyncHandler(async (req,res) => {
     })
 
     if(user) {
+      const validationCode =  await crypto.randomBytes(32)
+      const  emailValidationCode = validationCode.toString('hex')
+
       res.status(201).json({
         _id: user.id,
         first_name: user.first_name,
@@ -131,6 +137,86 @@ const loginUser = asyncHandler(async (req,res) => {
 //   console.log('empty function')
 // })
 
+const forgotPW = asyncHandler(async (req, res) => {
+  const { email } = req.body
+  const user = await User.findOne({ email }) 
+
+  if(!user) return res.status(404).json({ 
+    message: "No user with this email exists.", status: "error"
+  })
+
+  const token =  await crypto.randomBytes(32)
+
+  if(!token) return res.status(500).json({
+      message: "An error occured with randombypes, please try again later.",
+    })
+
+  const tokenToHex = token.toString("hex")
+
+  user.resetToken = tokenToHex
+  user.tokenExpiration = Date.now() + 18000000
+
+  const saveToken = await user.save() 
+  const link = `${process.env.BASE_URL}/update_password/${user._id}/${tokenToHex}`
+  await passwordReset(user.email, "Password Reset", link)
+  
+  return res.status(200).json({
+    message: "Add your client url that handles reset password.",
+    data: {
+      resetToken: saveToken.resetToken,
+      tokenExpiration: saveToken.tokenExpiration,
+    },
+    status: "success",
+  })
+})
+
+const pwReset = asyncHandler(async (req, res) => {
+  const {id, tokenReq, newPW} = req.body
+  
+  const user = await User.findById(id)
+  if(!user) return res.status(400).json({
+    message: "Invalid link",
+    status: 'error'
+  })
+
+  console.log(user)
+
+  if(user.resetToken !== tokenReq) 
+  return res.status(400).json({
+    message: "Expired token",
+    status: "error"
+  })
+  
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(newPW, salt)
+
+  console.log(user)
+
+  user.password = hashedPassword
+  user.resetToken = ''
+  user.tokenExpiration = ''
+  // implement toke expiration
+  await user.save()
+
+  res.status(200).json({
+    message: "password reset successfully",
+    status: "success"
+  })
+})
+
+const checkLinkValid = asyncHandler(async (req, res) => {
+  const {id, token} = req.body
+  const user = User.findOne({ id })
+
+   if (user.resetToken === token) {
+    res.status(200).json({
+      message: "Reset Token Success"
+    })
+  } else {
+    res.status(404).json({message: 'token expired or invalid', status: 'fail'})
+  }
+})
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '10d'
@@ -140,5 +226,8 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
+  forgotPW,
+  pwReset,
+  checkLinkValid,
   // getUser,
 }

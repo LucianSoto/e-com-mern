@@ -45,12 +45,22 @@ const logout = async () => {
   localStorage.removeItem(localStorageUser)
 }
 
+const resetPassword = async (data) => {
+  const res = await axios.post(API_URL + "password_reset", data)
+
+  console.log(res)
+  // if(res.data) {
+  //   return res.data
+  // }
+}
+
 const authService = {
   register,
   googleRegister,
   googleLogin,
   login,
   logout,
+  resetPassword,
 }
 
 export default authService
